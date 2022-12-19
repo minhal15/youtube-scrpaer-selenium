@@ -1,4 +1,9 @@
 from selenium import webdriver
+import json
+from email.message import EmailMessage
+import ssl
+import os
+import smtplib
 import pandas as pd
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -41,7 +46,26 @@ def parse_video(video):
     'channel': channel_name,
     'description': description
   }
+
+def send_email(body): 
+  FROM_EMAIL= 'habibiahmedmohamed6@gmail.com'
+  FROM_PASSWORD = os.environ["GMAIL_PASSWORD"]
+  TO_EMAIL='habibiahmedmohamed6@gmail.com'
   
+  subject = 'Youtube trending videos'
+
+  em = EmailMessage()
+  em['From'] = FROM_EMAIL
+  em['To'] = TO_EMAIL
+  em['Subject'] = subject
+  em.set_content(body)
+
+  context = ssl.create_default_context()
+
+  with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+    smtp.login(FROM_EMAIL, FROM_PASSWORD)
+    smtp.sendmail(FROM_EMAIL, TO_EMAIL, em.as_string())
+
 
 if __name__ == "__main__":
   driver = get_driver()
@@ -58,6 +82,12 @@ if __name__ == "__main__":
   videos_df = pd.DataFrame(videos_data)
   print(videos_df)
   videos_df.to_csv('yt_trending.csv')
+
+  print("Send email")
+  body = json.dumps(videos_data, indent=2)
+  send_email(body)
+
+  print('Finishh')
   
   
 
