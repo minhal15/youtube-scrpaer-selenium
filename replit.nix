@@ -1,5 +1,7 @@
 { pkgs }: {
   deps = [
+    pkgs.ungoogled-chromium
+    pkgs.chromedriver
     pkgs.python38Full
   ];
   env = {
