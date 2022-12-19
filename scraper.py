@@ -4,7 +4,6 @@ from email.message import EmailMessage
 import ssl
 import os
 import smtplib
-import pandas as pd
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import time
@@ -79,9 +78,9 @@ if __name__ == "__main__":
   videos_data = [parse_video(video) for video in videos[:10]]
 
   print('Save data to CSV')
-  videos_df = pd.DataFrame(videos_data)
-  print(videos_df)
-  videos_df.to_csv('yt_trending.csv')
+  # videos_df = pd.DataFrame(videos_data)
+  # print(videos_df)
+  # videos_df.to_csv('yt_trending.csv')
 
   print("Send email")
   body = json.dumps(videos_data, indent=2)
